@@ -1,11 +1,10 @@
 require('dotenv').config();
 const express = require('express');
 const multer = require('multer');
+const fetch = require('node-fetch');
 const crypto = require('crypto-js');
 const { fromBuffer } = require('file-type');
 const path = require('path');
-
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });

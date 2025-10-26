@@ -87,7 +87,7 @@
       loadSpin.classList.remove('hidden');
       const fd = new FormData();
       fd.append('file', f);
-      fetch('/api/upload', { method: 'POST', body: fd })
+      fetch('/upload', { method: 'POST', body: fd })
         .then(r => r.json())
         .then(j => {
           if (j.status) {

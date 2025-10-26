@@ -1,7 +1,7 @@
 {
   "name": "fik-uploader",
   "version": "1.0.0",
-  "description": "file uploader compatible with Vercel, VPS, and kontol",
+  "description": "file uploader compatible with Vercel, VPS, and others",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {
@@ -10,10 +10,9 @@
   "dependencies": {
     "dotenv": "^16.3.1",
     "express": "^4.19.2",
-    "googleapis": "^126.0.1",
     "multer": "^1.4.5-lts.1",
     "node-fetch": "2.6.11",
     "crypto-js": "^4.2.0",
-    "file-type": "^18.7.0"
+    "file-type": "^16.5.4"
   }
 }

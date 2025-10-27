@@ -1025,5 +1025,175 @@ body.dark-mode #trackDuration {
   #trackDuration {
     font-size: 0.65rem;
     min-width: 28px;
+  #music-wrap {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 1000;
+}
+
+#music-card {
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px var(--shadow-color);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  max-width: 420px;
+  margin: 0 auto;
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+body.dark-mode #music-card {
+  background: var(--dark-card-background);
+  border-color: var(--dark-border-color);
+}
+
+#cover {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+#meta {
+  flex: 1;
+  min-width: 0;
+}
+
+#trackTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--dark-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.dark-mode #trackTitle {
+  color: var(--dark-text-color);
+}
+
+#ctrl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#playPauseBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--primary-blue);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: background-color 0.3s ease;
+  position: relative;
+}
+
+#playPauseBtn:hover {
+  background: var(--dark-text);
+}
+
+#playPauseBtn.play::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 10px solid #fff;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  margin-left: 3px;
+}
+
+#playPauseBtn.pause::before,
+#playPauseBtn.pause::after {
+  content: '';
+  width: 3px;
+  height: 14px;
+  background: #fff;
+  position: absolute;
+}
+
+#playPauseBtn.pause::before {
+  left: 11px;
+}
+
+#playPauseBtn.pause::after {
+  right: 11px;
+}
+
+#progressBar {
+  width: 120px;
+  height: 5px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--border-color);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+#progressBar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--primary-blue);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+body.dark-mode #progressBar::-webkit-slider-thumb {
+  background: var(--dark-blue-accent);
+}
+
+@media (max-width: 600px) {
+  #music-wrap {
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+  }
+  #music-card {
+    padding: 8px;
+    gap: 10px;
+  }
+  #cover {
+    width: 40px;
+    height: 40px;
+  }
+  #trackTitle {
+    font-size: 0.8rem;
+  }
+  #progressBar {
+    width: 80px;
+  }
+  #playPauseBtn {
+    width: 32px;
+    height: 32px;
+  }
+  #playPauseBtn.play::before {
+    border-left-width: 8px;
+    border-top-width: 5px;
+    border-bottom-width: 5px;
+    margin-left: 2px;
+  }
+  #playPauseBtn.pause::before,
+  #playPauseBtn.pause::after {
+    width: 2px;
+    height: 12px;
+  }
+  #playPauseBtn.pause::before {
+    left: 10px;
+  }
+  #playPauseBtn.pause::after {
+    right: 10px;
   }
 }

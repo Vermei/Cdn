@@ -55,12 +55,18 @@
     <div id="list"></div>
   </main>
 
-  <div id="music-bar">
-    <audio id="bgm" loop src="/assets/Anjay.mp3"></audio>
-    <button id="playPauseBtn"></button>
-    <span id="trackTime">0:00</span>
-    <input type="range" id="progressBar" value="0" step="1">
-    <span id="trackDuration">0:00</span>
+  <div id="music-wrap">
+    <div id="music-card">
+      <img id="cover" src="/assets/cover.jpg" alt="cover">
+      <div id="meta">
+        <div id="trackTitle">My Love Westlife</div>
+      </div>
+      <div id="ctrl">
+        <button id="playPauseBtn" class="play"></button>
+        <input type="range" id="progressBar" value="0" step="1">
+      </div>
+    </div>
+    <audio id="bgm" src="/assets/lagu.mp4"></audio>
   </div>
 
   <div id="toast-container"></div>
@@ -76,8 +82,6 @@
     const bgm = document.getElementById('bgm');
     const playPauseBtn = document.getElementById('playPauseBtn');
     const progressBar = document.getElementById('progressBar');
-    const trackTime = document.getElementById('trackTime');
-    const trackDuration = document.getElementById('trackDuration');
 
     const showToast = (msg, type = 'default') => {
       const box = document.getElementById('toast-container');
@@ -142,34 +146,40 @@
     bgm.volume = 0.4;
     let isPlaying = false;
 
-    function fmtTime(sec) {
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
-      return `${m}:${s.toString().padStart(2, '0')}`;
+    function syncBtn() {
+      playPauseBtn.className = isPlaying ? 'pause' : 'play';
     }
+
+    playPauseBtn.addEventListener('click', () => {
+      if (isPlaying) bgm.pause();
+      else bgm.play();
+      isPlaying = !isPlaying;
+      syncBtn();
+    });
+
+    bgm.addEventListener('play', () => { isPlaying = true; syncBtn(); });
+    bgm.addEventListener('pause', () => { isPlaying = false; syncBtn(); });
 
     bgm.addEventListener('loadedmetadata', () => {
       progressBar.max = Math.floor(bgm.duration);
-      trackDuration.textContent = fmtTime(bgm.duration);
     });
 
     bgm.addEventListener('timeupdate', () => {
       progressBar.value = Math.floor(bgm.currentTime);
-      trackTime.textContent = fmtTime(bgm.currentTime);
     });
 
     progressBar.addEventListener('input', () => {
       bgm.currentTime = progressBar.value;
     });
 
-    playPauseBtn.addEventListener('click', () => {
-      if (isPlaying) { bgm.pause(); playPauseBtn.textContent = '▶'; }
-      else { bgm.play(); playPauseBtn.textContent = '❚❚'; }
-      isPlaying = !isPlaying;
+    bgm.addEventListener('ended', () => {
+      isPlaying = false;
+      syncBtn();
+      progressBar.value = 0;
     });
 
     window.addEventListener('load', () => {
-      bgm.play().then(() => { isPlaying = true; playPauseBtn.textContent = '❚❚'; }).catch(() => {});
+      bgm.play().then(() => { isPlaying = true; syncBtn(); }).catch(() => {});
     });
   </script>
 </body>

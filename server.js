@@ -152,7 +152,7 @@ app.post('/upload', uploadProcessor.single('file'), async (req, res) => {
         if (!req.file) return res.status(400).json({ status: false, message: 'No file detected' })
         
         const result = await uploadToGithub(req.file.buffer)
-        const finalUrl = `https://${req.get('host')}/f${result.path}`
+        const finalUrl = `https://${req.get('host')}/${result.path}`
         
         await sendTelegramLog(result.filename, 'Frontend Web', finalUrl, clientIp, result.isDuplicate)
         
@@ -176,7 +176,7 @@ app.post('/api/upload', uploadProcessor.single('file'), async (req, res) => {
         if (!req.file) return res.status(400).json({ status: false, message: 'No file' })
         const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress
         const result = await uploadToGithub(req.file.buffer)
-        const finalUrl = `https://${req.get('host')}/f${result.path}`
+        const finalUrl = `https://${req.get('host')}/${result.path}`
         
         await sendTelegramLog(result.filename, 'Public API', finalUrl, clientIp, result.isDuplicate)
         

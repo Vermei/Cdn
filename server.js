@@ -195,7 +195,7 @@ app.post('/api/upload', uploadProcessor.single('file'), async (req, res) => {
     }
 })
 
-app.get('/f/:filename', async (req, res) => {
+app.get('/:filename', async (req, res) => {
     try {
         const proxyUrl = `https://cdn.jsdelivr.net/gh/${repoPath}@main/${req.params.filename}`
         const headers = {}

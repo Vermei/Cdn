@@ -12,7 +12,7 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({ 
-    origin: ['https://www.njy.my.id'], 
+    origin: ['https://njy.my.id'], 
     credentials: true,
     methods: ['GET', 'POST'], 
     allowedHeaders: ['Content-Type', 'User-Agent', 'Authorization'] 

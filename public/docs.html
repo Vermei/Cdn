@@ -1,140 +1,266 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Docs | Temp Uploader</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="/assets/logo.png">
-<link rel="stylesheet" href="/assets/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Fik Uploader API Documentation">
+    <title>Docs | Fik Uploader</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <style>
+        .terminal-box {
+            background: #1a1a2e;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .terminal-header {
+            background: #2d2d44;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27c93f; }
+        .terminal-title {
+            margin-left: 12px;
+            font-size: 11px;
+            color: #888;
+            font-family: 'Consolas', monospace;
+        }
+        .terminal-body {
+            padding: 14px 16px;
+            background: #1a1a2e;
+        }
+        .terminal-prompt {
+            color: #27c93f;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+        .terminal-text {
+            color: #e0e0e0;
+            font-family: 'Consolas', monospace;
+            font-size: 12px;
+        }
+        .endpoint-content {
+            position: relative;
+            z-index: 10;
+        }
+        .endpoint-body-inner {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
 </head>
-<body>
+<body class="docs-page">
+    <div class="docs-container">
+        <div class="docs-section">
+            <a href="/" class="back-btn hard-box bg-black text-white px-4 py-3 text-xs font-bold uppercase hard-shadow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to Upload
+            </a>
+        </div>
 
-<nav class="sidebar">
-  <div class="logo-box"><img src="/assets/logo.jpg" alt="Uploader Logo"></div>
-  <a href="/">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
-    <span>uploader</span>
-  </a>
-  <a href="/docs" class="active">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-    <span>docs</span>
-  </a>
-  <a href="/info">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-    <span>info</span>
-  </a>
-  <div class="theme-switcher">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="sun-icon"><path d="M12 9c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM3.5 12c0-2.09.84-3.98 2.2-5.36L4.28 5.22C2.68 6.82 1.75 8.9 1.75 11h1.75c0 .33.03.66.07 1H1.75zM20.5 12c0-2.09-.84-3.98-2.2-5.36l1.42-1.42c1.6 1.6 2.53 3.68 2.53 5.78h-1.75c0-.33-.03-.66-.07-1h1.77zM12 3.5c-2.09 0-3.98.84-5.36 2.2L5.22 4.28C6.82 2.68 8.9 1.75 11 1.75v1.75c.33 0 .66.03 1 .07V1.75zM12 20.5c2.09 0 3.98-.84 5.36-2.2l1.42 1.42c-1.6 1.6-3.68 2.53-5.78 2.53v-1.75c-.33 0-.66-.03-1-.07v1.75z"/></svg>
-    <label class="switch">
-      <input type="checkbox" id="theme-toggle">
-      <span class="slider"></span>
-    </label>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="moon-icon"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10c4.17 0 7.7-2.54 9.1-6.08-.2.05-.4.08-.6.08-3.04 0-5.5-2.46-5.5-5.5 0-1.43.55-2.73 1.43-3.72C15.68 3.59 13.92 2 11.99 2z"/></svg>
-  </div>
-</nav>
+        <div class="docs-header-section mb-6">
+            <h1 class="text-3xl font-black tracking-tighter mb-2">
+                API DOCUMENTATION
+            </h1>
+            <p class="text-sm text-gray-500">Public API for file uploads</p>
+        </div>
 
-<main class="page-text">
-  <h1>api documentation</h1>
-  <p>simple api for upload temporary image</p>
-  
-  <h2>endpoint</h2>
-  <p><code>POST /api/upload.php</code></p>
-  
-  <h2>parameters</h2>
-  <ul>
-    <li><strong>file</strong> : image file (jpg, png, webp, gif). max 20mb.</li>
-    <li><strong>expire</strong> : 3, 5, or 30 (in minutes). default 30.</li>
-  </ul>
-  
-  <h2>success response</h2>
-  <pre>{
-  "status": true,
-  "filename": "abc1.jpg",
-  "url": "https://domain.com/f/abc1.jpg",
-  "expire_minutes": 30
-}</pre>
+        <div class="docs-section">
+            <span class="docs-label">Base URL</span>
+            <div class="terminal-box">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">bash</span>
+                </div>
+                <div class="terminal-body">
+                    <span class="terminal-prompt">$</span>
+                    <span class="terminal-text" id="base-url">https://your-domain.com</span>
+                </div>
+            </div>
+        </div>
 
-  <h2>error response</h2>
-  <pre>{
-  "status": false,
-  "message": "unsupported type"
-}</pre>
+        <div class="docs-section">
+            <span class="docs-label">Endpoints</span>
 
-  <h2>Contoh Penggunaan (JavaScript)</h2>
-  <p>Berikut adalah contoh fungsi <code>async/await</code> untuk mengupload file menggunakan Fetch API.</p>
-  <pre>async function uploadImage(file, expireMinutes = 30) {
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('expire', expireMinutes);
+            <div class="endpoint-box hard-box">
+                <div class="endpoint-header post-api">
+                    <span class="method">POST</span>
+                    <span class="path">/api/upload</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-content">
+                        <p class="endpoint-desc">Upload file to the server. Public endpoint - no authentication required.</p>
+                        <div class="endpoint-info">
+                            <span class="endpoint-badge">Public</span>
+                            <span class="endpoint-badge">25MB Max</span>
+                            <span class="endpoint-badge">20/min</span>
+                        </div>
+                        <div class="response-box">
+                            <span class="response-label">Request:</span>
+                            <ul class="docs-list">
+                                <li>Content-Type: multipart/form-data</li>
+                                <li>Field: file (binary)</li>
+                            </ul>
+                        </div>
+                        <div class="response-box">
+                            <span class="response-label">Response:</span>
+                            <pre class="response-code">{"status":true,"result":{"name":"abc.jpg","url":"https://domain.com/files/abc.jpg","mime":"image/jpeg","isNew":true}}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-  try {
-    const response = await fetch('/api/upload.php', {
-      method: 'POST',
-      body: formData
-    });
+            <div class="endpoint-box hard-box">
+                <div class="endpoint-header get">
+                    <span class="method">GET</span>
+                    <span class="path">/files/:filename</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-content">
+                        <p class="endpoint-desc">Retrieve uploaded file via jsDelivr CDN. Supports HTTP Range for video streaming.</p>
+                        <div class="endpoint-info">
+                            <span class="endpoint-badge">Public</span>
+                            <span class="endpoint-badge">Range: Yes</span>
+                            <span class="endpoint-badge">CDN: Global</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="endpoint-box hard-box">
+                <div class="endpoint-header get">
+                    <span class="method">GET</span>
+                    <span class="path">/health</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-content">
+                        <p class="endpoint-desc">Health check endpoint for monitoring service status.</p>
+                        <div class="response-box">
+                            <span class="response-label">Response:</span>
+                            <pre class="response-code">{"status":"ok","timestamp":"2025-03-28T13:00:00.000Z","uptime":3600.5}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    const result = await response.json();
+        <div class="docs-section">
+            <span class="docs-label">Rate Limits</span>
+            <div class="hard-box docs-warn p-4 hard-shadow-static">
+                <ul class="docs-list" style="margin: 0; padding-left: 0;">
+                    <li style="padding: 6px 0; border-bottom: 2px solid rgba(220, 38, 38, 0.3);">
+                        <strong>API Upload:</strong> 20 requests/minute per IP
+                    </li>
+                    <li style="padding: 6px 0;">
+                        <strong>File Download:</strong> Unlimited (CDN cached)
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-    if (result.status) {
-      console.log('Upload successful!');
-      console.log('URL:', result.url);
-      return result.url;
-    } else {
-      console.error('Upload failed:', result.message);
-      return null;
-    }
-  } catch (error) {
-    console.error('Network or server error:', error);
-    return null;
-  }
-}
-</pre>
-  <p>Anda bisa memanggil fungsi ini dari event listener, misalnya saat file dipilih:</p>
-  <pre>// HTML: &lt;input type="file" id="fileInput"&gt;
-// HTML: &lt;select id="expireSelect"&gt;...&lt;/select&gt;
+        <div class="docs-section">
+            <span class="docs-label">Supported File Types</span>
+            <div class="hard-box docs-success p-4 hard-shadow-static">
+                <div class="tag-container">
+                    <span class="type-tag">JPEG</span>
+                    <span class="type-tag">PNG</span>
+                    <span class="type-tag">WEBP</span>
+                    <span class="type-tag">GIF</span>
+                    <span class="type-tag">MP4</span>
+                    <span class="type-tag">WEBM</span>
+                    <span class="type-tag">MOV</span>
+                </div>
+                <p class="text-xs" style="margin: 12px 0 0; color: var(--green-600); font-weight: 700;">
+                    ✓ MIME type validation enforced
+                </p>
+            </div>
+        </div>
 
-const myFileInput = document.getElementById('fileInput');
-const myExpireSelect = document.getElementById('expireSelect');
+        <div class="docs-section">
+            <span class="docs-label">Examples</span>
+            
+            <div class="code-example">
+                <div class="code-header">
+                    <span class="code-title">JavaScript</span>
+                    <button class="copy-btn" onclick="copyCode('code-fetch')">Copy</button>
+                </div>
+                <pre class="docs-code" id="code-fetch">const fd = new FormData()
+fd.append('file', fileInput.files[0])
 
-myFileInput.addEventListener('change', async (event) => {
-  const file = event.target.files[0];
-  const expire = myExpireSelect.value;
-  
-  if (file) {
-    console.log('Uploading...');
-    const fileUrl = await uploadImage(file, expire);
-    
-    if (fileUrl) {
-      console.log('File is available at:', fileUrl);
-      // Anda bisa tampilkan URL ke user di sini
-    }
-  }
-});</pre>
-</main>
+const res = await fetch('/api/upload', {
+  method: 'POST',
+  body: fd
+})
 
-<div id="toast-container"></div>
+const data = await res.json()
+console.log(data.result.url)</pre>
+            </div>
+            
+            <div class="code-example">
+                <div class="code-header">
+                    <span class="code-title">cURL</span>
+                    <button class="copy-btn" onclick="copyCode('code-curl')">Copy</button>
+                </div>
+                <pre class="docs-code" id="code-curl">curl -X POST https://your-domain.com/api/upload \
+  -F "file=@image.jpg"
 
-<script>
-const themeToggle=document.getElementById('theme-toggle');
+# Response:
+# {"status":true,"result":{"name":"abc.jpg","url":"https://..."}}</pre>
+            </div>
 
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) {
-  document.body.classList.add(savedTheme);
-  themeToggle.checked = savedTheme === 'dark-mode';
-} else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  document.body.classList.add('dark-mode');
-  themeToggle.checked = true;
-}
+            <div class="code-example">
+                <div class="code-header">
+                    <span class="code-title">Python</span>
+                    <button class="copy-btn" onclick="copyCode('code-python')">Copy</button>
+                </div>
+                <pre class="docs-code" id="code-python">import requests
 
-themeToggle.addEventListener('change', () => {
-  if (themeToggle.checked) {
-    document.body.classList.add('dark-mode');
-    localStorage.setItem('theme', 'dark-mode');
-  } else {
-    document.body.classList.remove('dark-mode');
-    localStorage.setItem('theme', 'light');
-  }
-});
-</script>
+files = {'file': open('image.jpg', 'rb')}
+res = requests.post('https://your-domain.com/api/upload', files=files)
+
+print(res.json()['result']['url'])</pre>
+            </div>
+        </div>
+    </div>
+
+    <footer class="app-footer">
+        <div class="footer-content">
+            <p class="footer-text">Fik Uploader</p>
+            <p class="footer-copyright">© 2025 All rights reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        function copyCode(elementId) {
+            const code = document.getElementById(elementId).textContent
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = event.target
+                const originalText = btn.innerText
+                btn.innerText = 'Copied!'
+                btn.style.background = 'var(--green-600)'
+                btn.style.color = 'var(--white)'
+                setTimeout(() => {
+                    btn.innerText = originalText
+                    btn.style.background = ''
+                    btn.style.color = ''
+                }, 2000)
+            })
+        }
+        
+        document.getElementById('base-url').textContent = window.location.origin
+    </script>
 </body>
 </html>

@@ -1,186 +1,21 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Fik Uploader</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="/assets/logo.png">
-  <link rel="stylesheet" href="/assets/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Fast and secure file uploader powered by GitHub and jsDelivr CDN">
+    <meta name="theme-color" content="#2563eb">
+    <title>Fik Uploader</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2'><path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/><polyline points='17 8 12 3 7 8'/><line x1='12' y1='3' x2='12' y2='15'/></svg>">
 </head>
 <body>
-  <nav class="sidebar">
-    <div class="logo-box"><img src="/assets/logo.jpg" alt="Logo"></div>
-    <a href="/" class="active">
-      <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
-      <span>uploader</span>
-    </a>
-    <a href="/docs">
-      <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-      <span>docs</span>
-    </a>
-    <a href="/info">
-      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-      <span>info</span>
-    </a>
-    <div class="theme-switcher">
-      <svg class="sun-icon" viewBox="0 0 24 24"><path d="M12 9c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3zm0 8c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM3.5 12c0-2.09.84-3.98 2.2-5.36L4.28 5.22C2.68 6.82 1.75 8.9 1.75 11h1.75c0 .33.03.66.07 1H1.75zm17 0c0-2.09-.84-3.98-2.2-5.36l1.42-1.42c1.6 1.6 2.53 3.68 2.53 5.78h-1.75c0-.33-.03-.66-.07-1h1.77zM12 3.5c-2.09 0-3.98.84-5.36 2.2L5.22 4.28C6.82 2.68 8.9 1.75 11 1.75v1.75c.33 0 .66.03 1 .07V1.75zm0 17c2.09 0 3.98-.84 5.36-2.2l1.42 1.42c-1.6 1.6-3.68 2.53-5.78 2.53v-1.75c-.33 0-.66-.03-1-.07v1.75z"/></svg>
-      <label class="switch"><input type="checkbox" id="theme-toggle"><span class="slider"></span></label>
-      <svg class="moon-icon" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10c4.17 0 7.7-2.54 9.1-6.08-.2.05-.4.08-.6.08-3.04 0-5.5-2.46-5.5-5.5 0-1.43.55-2.73 1.43-3.72C15.68 3.59 13.92 2 11.99 2z"/></svg>
-    </div>
-  </nav>
+    <div id="root"></div>
 
-  <main>
-    <h1>Fik Uploader</h1>
-    <p>upload image or video, get permanent link</p>
-
-    <div id="upload-box">
-      <div class="loading-overlay hidden">
-        <div class="loading-spinner"></div>
-        <p>Uploading...</p>
-      </div>
-      <div id="drop">
-        <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
-        drop file here or <span class="browse-link" onclick="document.getElementById('file').click()">browse</span>
-      </div>
-      <input type="file" id="file" accept="image/*,video/*">
-    </div>
-
-    <div id="result" class="hidden">
-      <img src="/assets/check.png" alt="Success Checkmark" class="check">
-      <p>Uploaded successfully</p>
-      <input type="text" id="url" readonly>
-      <button onclick="copy()">copy url</button>
-    </div>
-
-    <div id="list"></div>
-  </main>
-
-  <div id="music-wrap">
-    <div id="music-card">
-      <img id="cover" src="/assets/cover.jpg" alt="cover">
-      <div id="meta">
-        <div id="trackTitle">My Love Westlife</div>
-      </div>
-      <div id="ctrl">
-        <button id="playPauseBtn" class="play"></button>
-        <input type="range" id="progressBar" value="0" step="1">
-      </div>
-    </div>
-    <audio id="bgm" src="/assets/Anjay.mp3"></audio>
-  </div>
-
-  <div id="toast-container"></div>
-
-  <script>
-    const drop = document.getElementById('drop');
-    const fileInput = document.getElementById('file');
-    const resultBox = document.getElementById('result');
-    const urlInput = document.getElementById('url');
-    const listBox = document.getElementById('list');
-    const loadSpin = document.querySelector('.loading-overlay');
-    const themeToggle = document.getElementById('theme-toggle');
-    const bgm = document.getElementById('bgm');
-    const playPauseBtn = document.getElementById('playPauseBtn');
-    const progressBar = document.getElementById('progressBar');
-
-    const showToast = (msg, type = 'default') => {
-      const box = document.getElementById('toast-container');
-      const t = document.createElement('div');
-      t.className = `toast ${type}`;
-      t.textContent = msg;
-      box.appendChild(t);
-      setTimeout(() => t.classList.add('hide'), 3000);
-      setTimeout(() => t.remove(), 3500);
-    };
-
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(e => drop.addEventListener(e, ev => ev.preventDefault()));
-    ['dragenter', 'dragover'].forEach(e => drop.addEventListener(e, () => drop.classList.add('drag')));
-    ['dragleave', 'drop'].forEach(e => drop.addEventListener(e, () => drop.classList.remove('drag')));
-
-    drop.addEventListener('drop', e => e.dataTransfer.files[0] && upload(e.dataTransfer.files[0]));
-    fileInput.onchange = () => upload(fileInput.files[0]);
-
-    function upload(f) {
-      loadSpin.classList.remove('hidden');
-      const fd = new FormData();
-      fd.append('file', f);
-      fetch('/upload', { method: 'POST', body: fd })
-        .then(r => r.json())
-        .then(j => {
-          if (j.status) {
-            urlInput.value = j.url;
-            resultBox.classList.remove('hidden');
-            addItem(j.url, f.name, (f.size / 1024).toFixed(1));
-          } else showToast(j.message || 'Upload failed', 'error');
-        })
-        .catch(() => showToast('An error occurred', 'error'))
-        .finally(() => { loadSpin.classList.add('hidden'); fileInput.value = ''; });
-    }
-
-    function copy() {
-      urlInput.select();
-      document.execCommand('copy');
-      showToast('URL copied!');
-    }
-
-    function addItem(url, name, size) {
-      const div = document.createElement('div');
-      div.className = 'item';
-      div.innerHTML = `<a href="${url}" target="_blank">${name}</a><small>${size}kb</small>`;
-      listBox.prepend(div);
-    }
-
-    (() => {
-      const s = localStorage.getItem('theme');
-      if (s) { document.body.classList.add(s); themeToggle.checked = s === 'dark-mode'; }
-      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark-mode'); themeToggle.checked = true;
-      }
-      themeToggle.onchange = () => {
-        const dark = themeToggle.checked;
-        document.body.classList.toggle('dark-mode', dark);
-        localStorage.setItem('theme', dark ? 'dark-mode' : 'light');
-      };
-    })();
-
-    bgm.volume = 0.4;
-    let isPlaying = false;
-
-    function syncBtn() {
-      playPauseBtn.className = isPlaying ? 'pause' : 'play';
-    }
-
-    playPauseBtn.addEventListener('click', () => {
-      if (isPlaying) bgm.pause();
-      else bgm.play();
-      isPlaying = !isPlaying;
-      syncBtn();
-    });
-
-    bgm.addEventListener('play', () => { isPlaying = true; syncBtn(); });
-    bgm.addEventListener('pause', () => { isPlaying = false; syncBtn(); });
-
-    bgm.addEventListener('loadedmetadata', () => {
-      progressBar.max = Math.floor(bgm.duration);
-    });
-
-    bgm.addEventListener('timeupdate', () => {
-      progressBar.value = Math.floor(bgm.currentTime);
-    });
-
-    progressBar.addEventListener('input', () => {
-      bgm.currentTime = progressBar.value;
-    });
-
-    bgm.addEventListener('ended', () => {
-      isPlaying = false;
-      syncBtn();
-      progressBar.value = 0;
-    });
-
-    window.addEventListener('load', () => {
-      bgm.play().then(() => { isPlaying = true; syncBtn(); }).catch(() => {});
-    });
-  </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/assets/app.js"></script>
 </body>
 </html>

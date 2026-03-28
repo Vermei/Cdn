@@ -146,7 +146,7 @@ vercel --prod
 
 ### Base URL
 ```
-https://your-domain.com
+https://njy.my.id
 ```
 
 ### Endpoints
@@ -156,7 +156,7 @@ Upload file (public API - no authentication required)
 
 **Request:**
 ```bash
-curl -X POST https://your-domain.com/api/upload \
+curl -X POST https://njy.my.id/api/upload \
   -F "file=@image.jpg"
 ```
 
@@ -166,7 +166,7 @@ curl -X POST https://your-domain.com/api/upload \
   "status": true,
   "result": {
     "name": "abc.jpg",
-    "url": "https://your-domain.com/files/abc.jpg",
+    "url": "https://njy.my.id/files/abc.jpg",
     "mime": "image/jpeg",
     "isNew": true
   }
@@ -177,14 +177,14 @@ curl -X POST https://your-domain.com/api/upload \
 Retrieve uploaded file via CDN
 
 ```bash
-curl https://your-domain.com/files/abc.jpg
+curl https://njy.my.id/files/abc.jpg
 ```
 
 #### GET /health
 Health check endpoint
 
 ```bash
-curl https://your-domain.com/health
+curl https://njy.my.id/health
 ```
 
 **Response:**
@@ -224,7 +224,7 @@ console.log(data.result.url)
 import requests
 
 files = {'file': open('image.jpg', 'rb')}
-res = requests.post('https://your-domain.com/api/upload', files=files)
+res = requests.post('https://njy.my.id/api/upload', files=files)
 
 print(res.json()['result']['url'])
 ```
@@ -238,7 +238,7 @@ const fs = require('fs')
 const form = new FormData()
 form.append('file', fs.createReadStream('image.jpg'))
 
-const res = await fetch('https://your-domain.com/api/upload', {
+const res = await fetch('https://njy.my.id/api/upload', {
   method: 'POST',
   body: form
 })

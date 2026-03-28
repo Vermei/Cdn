@@ -70,14 +70,13 @@ app.post('/upload', uploadMiddleware, upload.single('file'), async (req, res) =>
         const clientIp = getClientIp(req)
         const userAgent = req.headers['user-agent'] || 'Unknown'
         const githubToken = process.env.token
-        const sessionCookie = req.cookies.sessionAuth
-
-        if (!validateSession(clientIp, userAgent, githubToken, sessionCookie)) {
-            return res.status(403).json({
-                status: false,
-                message: 'Invalid session. Refresh page and try again.'
-            })
-        }
+        
+        console.log('Upload request received:', {
+            hasFile: !!req.file,
+            hasSession: !!req.cookies.sessionAuth,
+            clientIp: clientIp,
+            platform: process.env.VERCEL ? 'Vercel' : 'Node.js'
+        })
 
         if (!req.file) {
             return res.status(400).json({
@@ -97,6 +96,12 @@ app.post('/upload', uploadMiddleware, upload.single('file'), async (req, res) =>
         const uploadResult = await uploadFile(req.file.buffer)
         const fileUrl = 'https://' + req.get('host') + '/files/' + uploadResult.path
 
+        console.log('Upload successful:', {
+            filename: uploadResult.filename,
+            url: fileUrl,
+            isDuplicate: uploadResult.isDuplicate
+        })
+
         await sendTelegramNotification(
             uploadResult.filename,
             'Web',
@@ -115,10 +120,10 @@ app.post('/upload', uploadMiddleware, upload.single('file'), async (req, res) =>
             }
         })
     } catch (error) {
-        console.error('Upload error:', error)
+        console.error('Upload error:', error.message, error.stack)
         res.status(500).json({
             status: false,
-            message: 'Upload failed. Please try again.'
+            message: 'Upload failed: ' + error.message
         })
     }
 })

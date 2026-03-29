@@ -28,7 +28,7 @@ File uploader service powered by GitHub Storage + jsDelivr CDN. Upload images an
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/Uploader.git
+git clone https://github.com/whofik/Uploader.git
 cd Uploader
 ```
 
